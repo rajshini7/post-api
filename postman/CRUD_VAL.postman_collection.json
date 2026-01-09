@@ -1,20 +1,102 @@
 {
-  "id": "9b90cf05-bf2d-4a4c-829c-b98640149631",
-  "name": "JSONplaceholder",
-  "values": [
+  "info": {
+    "name": "CRUD VAL",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
     {
-      "key": "base_url",
-      "value": "https://jsonplaceholder.typicode.com/posts",
-      "type": "default",
-      "enabled": true
+      "name": "POST - Create Post",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"New Post\",\n  \"body\": \"Sample body\",\n  \"userId\": 1\n}"
+        },
+        "url": "{{base_url}}"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('POST returns 201', () => pm.response.code === 201);"
+          ]
+        }
+      }]
     },
+
     {
-      "key": "currentPostId",
-      "value": "",
-      "type": "default",
-      "enabled": true
+      "name": "GET - Existing Post",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/1"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('GET returns 200', () => pm.response.code === 200);"
+          ]
+        }
+      }]
+    },
+
+    {
+      "name": "PUT - Update Post",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": 1,\n  \"title\": \"Updated Title\",\n  \"body\": \"Updated body\",\n  \"userId\": 1\n}"
+        },
+        "url": "{{base_url}}/1"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('PUT returns 200', () => pm.response.code === 200);"
+          ]
+        }
+      }]
+    },
+
+    {
+      "name": "PATCH - Partial Update",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"title\": \"Patched Title\" }"
+        },
+        "url": "{{base_url}}/1"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('PATCH returns 200', () => pm.response.code === 200);"
+          ]
+        }
+      }]
+    },
+
+    {
+      "name": "DELETE - Delete Post",
+      "request": {
+        "method": "DELETE",
+        "url": "{{base_url}}/1"
+      },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('DELETE returns 200 or 204', () => [200,204].includes(pm.response.code));"
+          ]
+        }
+      }]
     }
-  ],
-  "_postman_variable_scope": "environment",
-  "_postman_exported_using": "Postman/11"
+  ]
 }

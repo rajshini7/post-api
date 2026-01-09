@@ -14,6 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ---------- PYTHON ----------
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -25,32 +26,35 @@ jobs:
           pip install -r requirements.txt
           pip install pytest-html
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-
-      - name: Install Newman
-        run: |
-          npm install -g newman newman-reporter-htmlextra
-
       - name: Run Pytest API tests
         env:
           BASE_URL: https://jsonplaceholder.typicode.com
           AUTH_TOKEN: dummy-token
         run: |
+          mkdir -p reports
           pytest -v -s \
-          --html=reports/pytest-report.html \
-          --self-contained-html
+            --html=reports/pytest-report.html \
+            --self-contained-html
+
+      # ---------- NODE / NEWMAN ----------
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install Newman + Reporter
+        run: |
+          npm install -g newman newman-reporter-htmlextra
 
       - name: Run Newman collection
         run: |
           mkdir -p newman-report
           newman run postman/CRUD_VAL.postman_collection.json \
             -e postman/JSONplaceholder.postman_environment.json \
-            --reporters cli,htmlextra \
-            --reporter-htmlextra-export newman-report/newman.html
+            --reporters "cli,htmlextra" \
+            --reporter-htmlextra-export "newman-report/newman.html"
 
+      # ---------- ARTIFACTS ----------
       - name: Upload Pytest report
         uses: actions/upload-artifact@v4
         with:
