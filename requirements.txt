@@ -1,3 +1,24 @@
-pytest
-requests
-pytest-html
+# -----------------------------
+# Core test framework
+# -----------------------------
+pytest==8.4.2
+
+# -----------------------------
+# HTTP client for API testing
+# -----------------------------
+requests==2.32.3
+
+# -----------------------------
+# Reporting
+# -----------------------------
+pytest-html==4.1.1
+
+# -----------------------------
+# Async compatibility (used by pytest plugins)
+# -----------------------------
+anyio==4.11.0
+
+# -----------------------------
+# Parallel execution (optional but installed)
+# -----------------------------
+pytest-xdist==3.8.0
