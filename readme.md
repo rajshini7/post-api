@@ -5,45 +5,43 @@ This project is a **robust API automation testing framework** built using **Pyth
 
 It supports:
 - CRUD API validation (POST, GET, PUT, PATCH, DELETE)
-- Header and authentication validation
-- Data-driven testing
-- HTML reporting
-- CI/CD execution with GitHub Actions
-- Parallel and scalable execution
+- Centralized API client abstraction
+- Reusable payload builders (no hardcoding)
+- HTML reporting (Pytest & Newman)
+- CI/CD execution using GitHub Actions
 
-The framework is currently integrated with **JSONPlaceholder** as a mock API and is **production-ready** for real backend services.
+The framework currently uses **JSONPlaceholder** as a mock API and is **production-ready** for real backend services.
 
 ---
 
 ## WHY THIS PROJECT
-Modern backend systems rely heavily on APIs. This project demonstrates:
-
-- How to design **clean, maintainable API automation**
+Modern applications rely heavily on APIs. This project demonstrates:
+- Clean API automation architecture
 - Separation of concerns (client, payloads, tests)
-- Real-world CI/CD readiness
-- Industry-standard tooling (Pytest, Newman, GitHub Actions)
+- CI/CD-ready test execution
+- Industry-standard tools used
 
-This framework is suitable for:
-- Backend API testing
-- Regression testing
-- CI validation before deployments
-- Interview demonstrations for QA / SDET / Backend roles
+Suitable for:
+- API regression testing
+- Backend validation
+- CI quality gates
+- Interview and portfolio demonstration
 
 ---
 
 ## CORE CONCEPTS
-- **API Client Abstraction** – Centralized HTTP handling
-- **Reusable Payload Builders** – No hardcoded data
-- **Pytest Fixtures** – Shared setup & teardown
-- **Assertions at API Contract Level**
-- **HTML Reporting** – Pytest + Newman
-- **CI/CD Execution** – Automated on every push
+- **API Client Abstraction**
+- **Reusable Payload Builders**
+- **Pytest Fixtures**
+- **Contract-level Assertions**
+- **HTML Reporting**
+- **Automated CI Execution**
 
 ---
 
 ## TECH STACK
 ### Programming & Testing
-- Python 3.11+ / 3.14 compatible
+- Python 3.11+ (compatible up to 3.14)
 - Pytest
 - Requests
 
@@ -52,195 +50,92 @@ This framework is suitable for:
 - Newman HTML Extra Reporter
 
 ### API Tooling
-- Postman Collection
-- Newman (CLI runner)
+- Postman
+- Newman
 
 ### CI/CD
-- GitHub Actions (Ubuntu runner)
-- Node.js 18 (for Newman)
+- GitHub Actions
+- Node.js 18
 
 ---
 
 ## FOLDER STRUCTURE
+```text
 post-api/
-│
 ├── client/
-│ └── api_client.py # Central API request handler
-│
+│   └── api_client.py
 ├── data/
-│ └── payloads.py # Request payload builders
-│
+│   └── payloads.py
 ├── tests/
-│ └── test_posts_crud.py # CRUD API test cases
-│
+│   └── test_posts_crud.py
 ├── postman/
-│ ├── CRUD_VAL.postman_collection.json
-│ └── JSONplaceholder.postman_environment.json
-│
+│   ├── CRUD_VAL.postman_collection.json
+│   └── JSONplaceholder.postman_environment.json
 ├── reports/
-│ └── pytest-report.html # Pytest HTML report
-│
+│   └── pytest-report.html
 ├── newman-report/
-│ └── newman.html # Newman HTML report
-│
-├── .github/workflows/
-│ └── api-tests.yml # CI pipeline
-│
-├── conftest.py # Pytest fixtures
-├── pytest.ini # Pytest configuration
-├── requirements.txt # Python dependencies
-├── package.json # Node dependencies (Newman)
+│   └── newman.html
+├── .github/
+│   └── workflows/
+│       └── api-tests.yml
+├── conftest.py
+├── pytest.ini
+├── requirements.txt
+├── package.json
 ├── .gitignore
 └── README.md
-
-
----
-
-## HOW TO EXECUTE (LOCAL)
-post-api/
-│
-├── client/
-│ └── api_client.py # Central API request handler
-│
-├── data/
-│ └── payloads.py # Request payload builders
-│
-├── tests/
-│ └── test_posts_crud.py # CRUD API test cases
-│
-├── postman/
-│ ├── CRUD_VAL.postman_collection.json
-│ └── JSONplaceholder.postman_environment.json
-│
-├── reports/
-│ └── pytest-report.html # Pytest HTML report
-│
-├── newman-report/
-│ └── newman.html # Newman HTML report
-│
-├── .github/workflows/
-│ └── api-tests.yml # CI pipeline
-│
-├── conftest.py # Pytest fixtures
-├── pytest.ini # Pytest configuration
-├── requirements.txt # Python dependencies
-├── package.json # Node dependencies (Newman)
-├── .gitignore
-└── README.md
-
+```
 
 ---
 
 ## HOW TO EXECUTE (LOCAL)
 
-post-api/
-│
-├── client/
-│ └── api_client.py # Central API request handler
-│
-├── data/
-│ └── payloads.py # Request payload builders
-│
-├── tests/
-│ └── test_posts_crud.py # CRUD API test cases
-│
-├── postman/
-│ ├── CRUD_VAL.postman_collection.json
-│ └── JSONplaceholder.postman_environment.json
-│
-├── reports/
-│ └── pytest-report.html # Pytest HTML report
-│
-├── newman-report/
-│ └── newman.html # Newman HTML report
-│
-├── .github/workflows/
-│ └── api-tests.yml # CI pipeline
-│
-├── conftest.py # Pytest fixtures
-├── pytest.ini # Pytest configuration
-├── requirements.txt # Python dependencies
-├── package.json # Node dependencies (Newman)
-├── .gitignore
-└── README.md
-
-### 1. Clone the Repository
 ```bash
-git clone https://github.com/rajshini7/pytest-postman-api-testing.git
-cd post-api
-
-### 2. Create Virtual Environment
 python -m venv .venv
-.\.venv\Scripts\activate   # Windows
-
-### 3. Install Python Dependencies
+.\.venv\Scripts\activate
 pip install -r requirements.txt
+pytest -v -s --html=reports/pytest-report.html --self-contained-html
+```
 
-### 4. Run Pytest API Tests
-pytest -v -s \
---html=reports/pytest-report.html \
---self-contained-html
+---
 
-### 5. Install Newman & Reporter
+## POSTMAN / NEWMAN EXECUTION
+
+```bash
 npm install -g newman newman-reporter-htmlextra
+newman run postman/CRUD_VAL.postman_collection.json \
+  -e postman/JSONplaceholder.postman_environment.json \
+  --reporters "cli,htmlextra" \
+  --reporter-htmlextra-export "newman-report/newman.html"
+```
 
-6. Run Postman Collection via Newman
-newman run postman/CRUD_VAL.postman_collection.json ^
--e postman/JSONplaceholder.postman_environment.json ^
---reporters cli,htmlextra ^
---reporter-htmlextra-export newman-report/newman.html
+---
 
-###CI/CD READY
+## CI/CD READY
+- Runs on every push & PR to `development`
+- Executes Pytest and Newman
+- Uploads HTML reports as CI artifacts
 
-This project is fully CI/CD enabled using GitHub Actions.
+---
 
-Pipeline Features
+## EXPECTED OUTPUT
+- Passing CRUD API tests
+- Pytest HTML report
+- Newman HTML report
+- Green CI pipeline
 
-Triggered on push & PR to development
+---
 
-Installs Python & Node dependencies
-
-Runs Pytest API tests
-
-Runs Newman collection
-
-Uploads reports as artifacts
-
-CI Artifacts
-
-pytest-report.html
-
-newman.html
-
-You can download these directly from the GitHub Actions → Artifacts section.
-
-###EXPECTED OUTPUT
-
-✅ All CRUD API tests passing
-
-📄 Pytest HTML Report (detailed assertions)
-
-📄 Newman HTML Report (Postman execution summary)
-
-🚀 CI pipeline green on GitHub
-
-### BRANCHING STRATEGY
+## BRANCHING STRATEGY
+```text
 main
- ├── staging
- └── development
+├── staging
+└── development
+```
 
+---
 
-development → Active development & testing
-
-staging → Pre-release validation
-
-main → Production-ready code only
-
-Direct pushes to main are intentionally restricted.
-
-###CREATED BY
-
-Rajeev S
-API Automation & Python Enthusiast
+## CREATED BY
+**Rajeev S**  
+API Automation & Python Enthusiast  
 Bengaluru, India
-
