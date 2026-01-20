@@ -86,7 +86,6 @@ post-api/
 └── README.md
 ```
 
----
 
 ## HOW TO EXECUTE (LOCAL)
 
@@ -97,7 +96,6 @@ pip install -r requirements.txt
 pytest -v -s --html=reports/pytest-report.html --self-contained-html
 ```
 
----
 
 ## POSTMAN / NEWMAN EXECUTION
 
@@ -109,14 +107,13 @@ newman run postman/CRUD_VAL.postman_collection.json \
   --reporter-htmlextra-export "newman-report/newman.html"
 ```
 
----
 
 ## CI/CD READY
 - Runs on every push & PR to `development`
 - Executes Pytest and Newman
 - Uploads HTML reports as CI artifacts
 
----
+```
 
 ## EXPECTED OUTPUT
 - Passing CRUD API tests
@@ -124,7 +121,7 @@ newman run postman/CRUD_VAL.postman_collection.json \
 - Newman HTML report
 - Green CI pipeline
 
----
+```
 
 ## BRANCHING STRATEGY
 ```text
@@ -133,7 +130,6 @@ main
 └── development
 ```
 
----
 
 ## CREATED BY
 **Rajeev S**  
